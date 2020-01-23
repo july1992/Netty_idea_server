@@ -29,10 +29,14 @@ public class ChennelService {
 
 
     @RabbitListener(queues = "hluffy")
-    public void receive(String data){
+    public void receive(Object data){
 
 
-        System.out.println("消息："+data);
+        System.out.println("收到rabbitmq："+data);
+    }
+
+    public void sendChannel(String text) {
+        rabbitTemplate.convertAndSend("vily.direct", "hluffy", text);
     }
 //    // 可以在这里接收，也可以在service里接收
 //    public void getMsg() {

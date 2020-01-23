@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.vily.netty2.netty2.bean.ChennelMsg;
 import com.vily.netty2.netty2.bean.TypeData;
 //import com.vily.netty2.netty2.mq.MQUtils;
+import com.vily.netty2.netty2.service.ChennelService;
 import com.vily.netty2.netty2.utils.ChannelMapUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,16 +13,21 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 /**
- *  * description :  如果客户端是netty 用 String ， 如果客户端是websocket 用 TextWebSocketFrame
+ *  * description :  如果客户端是netty 用 String ， ctx.writeAndFlush("服务端:"+text);
+ *                   如果客户端是websocket 用 TextWebSocketFrame :   ctx.writeAndFlush(new TextWebSocketFrame("服务端:"+text));
  *  * Author : Vily
  *  * Date : 2019-11-13
  *  
  **/
 
 public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+
+
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame textWebSocketFrame) throws Exception {
@@ -31,6 +37,7 @@ public class ChatHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
 		System.out.println("服务端 content = "+text);
 		ctx.writeAndFlush(new TextWebSocketFrame("服务端:"+text));
 		ctx.writeAndFlush("服务端2:"+text);
+
 
 	}
 //	@Override

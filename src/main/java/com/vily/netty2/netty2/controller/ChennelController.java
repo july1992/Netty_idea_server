@@ -22,7 +22,7 @@ public class ChennelController {
     ChennelService mService;
 
     @GetMapping("/test")
-    public void test(){
+    public void test() throws Exception{
 
         System.out.println("-----");
 
